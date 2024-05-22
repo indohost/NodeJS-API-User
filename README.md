@@ -48,3 +48,4 @@ cp .env.example .env
 - express: Fast, unopinionated, minimalist web framework for Node.js.
 - mongoose: Elegant MongoDB object modeling for Node.js.
 - nodemon: A tool that helps develop Node.js-based applications by automatically restarting the node application when file changes in the directory are detected. Used for development purposes.
+- bcrypt: A library to help you hash passwords. This is important for securely storing user passwords in databases.
