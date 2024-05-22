@@ -1,8 +1,28 @@
+import bcrypt from "bcrypt";
 import User from "../model/userModel.js";
+
+const securePassword = async (password) => {
+  try {
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    return passwordHash;
+  } catch (error) {
+    res.status(400).send({ message: "Invalid password", error: error });
+  }
+};
 
 export const create = async (req, res, next) => {
   try {
-    const userData = new User(req.body);
+    const hashPassword = await securePassword(req.body.password);
+
+    const userData = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: hashPassword,
+      address: req.body.address,
+      avatar: req.file.filename,
+    });
+
     const { email } = userData;
     const userExist = await User.findOne({ email: email });
 
@@ -13,6 +33,7 @@ export const create = async (req, res, next) => {
     const savedUser = await userData.save();
     res.status(200).json(savedUser);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
